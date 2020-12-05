@@ -18,9 +18,10 @@ def printProgressBar(iteration, total, prefix = '', suffix = '', decimals = 1, l
         print()
 
 class torchDataset(torch.utils.data.Dataset):
-    def __init__(self, encodings, labels):
+    def __init__(self, encodings, labels, length):
         self.encodings = encodings
         self.labels = labels
+        self.length = length
 
     def __getitem__(self, idx):
         item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
@@ -29,7 +30,7 @@ class torchDataset(torch.utils.data.Dataset):
         return item
 
     def __len__(self):
-        return len(self.encodings)
+        return self.length
 
 
 class RobertaForClaimDetection(nn.Module):
@@ -82,10 +83,10 @@ class ClaimDetective():
 
     def inspect(self, sents, labels=None):
         # set up test data:
-        test_encodings = self.tokenizer(sents, truncation=True, padding=True)
-        test_dataset = torchDataset(test_encodings, labels)
-        test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
         n = len(sents)
+        test_encodings = self.tokenizer(sents, truncation=True, padding=True)
+        test_dataset = torchDataset(encodings=test_encodings, labels=labels, length=n)
+        test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
         
         # book-keeping:
         running_preds = []
@@ -93,7 +94,6 @@ class ClaimDetective():
         running_ones = 0
         running_corrects = 0
         printProgressBar(0, n, prefix='Progress:', suffix='sentence 0 / %d' % (n), length=25)
-
         # test:
         for i, batch in enumerate(test_loader):
             input_ids = batch['input_ids'].to(DEVICE)
@@ -112,6 +112,7 @@ class ClaimDetective():
                 running_corrects += torch.sum(preds == labs.data)
             running_ones += torch.sum(preds)
             printProgressBar(i+1, n, prefix='Progress:', suffix='sentence %d / %d' % (i+1, n), length=25)
+        print()
         
         # summary:
         if labels:
