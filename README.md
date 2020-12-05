@@ -14,7 +14,7 @@
 
 4. [example\_small.py](example_small.py) contains a very brief example of loading and using one of the models. **Read this file before using! Essentially provides all the documentation needed.** The output from this file can be found in the `example_outputs` directory, here: [small\_output.csv](example_outputs/small_output.csv). 
 
-5. [example\_big.py](example_big.py) is another example of how to load and use a model in a more realistic setting. Note: to run this you will need more packages than those listed in `requirements.txt` (e.g. `nltk` and `BeautifulSoup`). The output from this file can be found in the `example_outputs` directory, here: [big\_output.csv](example_outputs/big_output.csv)
+5. [example\_big.py](example_big.py) is another example of how to load and use a model in a more realistic setting. Note: to run this you will need more packages than those listed in `requirements.txt` (e.g. `nltk` and `BeautifulSoup`). The output from this file can be found in the `example_outputs` directory, in the files called `big_output_[model].csv` where `[model]` = the model used to generate the file.
 
 6. [example\_outputs](example_outputs) contains the output `.csv` files from the two `example.py` files.
 
