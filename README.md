@@ -6,7 +6,7 @@
 
 ## Overview
 
-1. [claim\_detective.py](claim_detective.py) contains all the necessary source code to use the check-worthiness detection models located in [models/](models). 
+1. [claim\_detective.py](claim_detective.py) contains all the necessary source code to use the check-worthiness detection models located in [models](models). 
 
 2. [models](models) is a directory containing the latest trained models. 
 
