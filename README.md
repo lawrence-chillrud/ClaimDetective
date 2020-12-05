@@ -10,7 +10,7 @@
 
 2. [models](models) is a directory containing the latest trained models. 
 
-3. [requirements.txt](requirements.txt) contains the packages and the versions used to write [claim\_detective.py](claim_detective.py)
+3. [requirements.txt](requirements.txt) contains the packages and the versions used to write `claim_detective.py`
 
 4. [sample.py](sample.py) contains a very brief example of loading and using one of the models. Read this file before using! Essentially provides all the documentation needed.
 
