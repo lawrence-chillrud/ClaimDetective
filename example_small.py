@@ -24,4 +24,4 @@ claims = sherlock.inspect(sents=sentences, labels = labels)
 # report() takes two arguments:
 # (1) claims_df = the output of inspect() to be printed.
 # (2) file_name = the desired name of the output .csv file. 
-sherlock.report(claims_df=claims, file_name="sample_output.csv")
+sherlock.report(claims_df=claims, file_name="./example_outputs/small_output.csv")

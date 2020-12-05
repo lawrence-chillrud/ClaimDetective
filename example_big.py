@@ -21,5 +21,5 @@ if __name__ == "__main__":
     print("Got the webpage! Now attempting to find claims...")
     claims = sherlock.inspect(sents)
     print("Saving claims!")
-    sherlock.report(claims, file_name="bigger_example_output.csv")
+    sherlock.report(claims, file_name="./example_outputs/big_output.csv")
 

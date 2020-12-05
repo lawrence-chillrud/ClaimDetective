@@ -6,15 +6,17 @@
 
 ## Overview
 
-1. [claim\_detective.py](claim_detective.py) contains all the necessary source code to use the check-worthiness detection models located in [models](models). 
+1. [claim\_detective.py](claim_detective.py) contains all the necessary source code to use the check-worthiness detection models located in the `models` directory. 
 
-2. [models](models) is a directory containing the latest trained models. 
+2. [models](models) is a directory containing the latest trained models. See below for details. 
 
 3. [requirements.txt](requirements.txt) contains the packages and the versions used to write `claim_detective.py`
 
-4. [sample.py](sample.py) contains a very brief example of loading and using one of the models. Read this file before using! Essentially provides all the documentation needed.
+4. [example\_small.py](example_small.py) contains a very brief example of loading and using one of the models. Read this file before using! Essentially provides all the documentation needed. The output from this file can be found in the `example_outputs` directory, here: [small\_output.csv](example_outputs/small_output.csv). 
 
-5. [sample\_output.csv](sample_output.csv) shows the saved output after running `sample.py` 
+5. [example\_big.py](example_big.py) is another example of how to load and use a model in a more realistic setting. Note: to run this you will need more packages than those listed in `requirements.txt` (e.g. `nltk` and `BeautifulSoup`) The output from this file can be found in the `example_outputs` directory, here: [big\_output.csv](example_outputs/big_output.csv)
+
+6. [example\_outputs](example_outputs) contains the output `.csv` files from the two `example.py` files.
 
 ## Models
 
