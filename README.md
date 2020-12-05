@@ -10,9 +10,11 @@
 
 2. [models](models) is a directory containing the latest trained models. 
 
-3. [sample.py](sample.py) contains a very brief example of loading and using one of the models. Read this file before using! Essentially provides all the documentation needed.
+3. [requirements.txt](requirements.txt) contains the packages and the versions used to write [claim\_detective.py](claim_detective.py)
 
-4. [sample\_output.csv](sample_output.csv) shows the saved output after running `sample.py` 
+4. [sample.py](sample.py) contains a very brief example of loading and using one of the models. Read this file before using! Essentially provides all the documentation needed.
+
+5. [sample\_output.csv](sample_output.csv) shows the saved output after running `sample.py` 
 
 ## Models
 
@@ -31,3 +33,4 @@ At the time of writing, I have made the following models are available on Google
 
 * [clef20](models/clef20.txt) was trained solely trained on the [CLEF-2020 CheckThat! dataset](https://github.com/sshaar/clef2020-factchecking-task1#clef2020-checkthat-task-1) (CT20-T1(en) corpus) described in [Barron-Cedeno et. al.](https://arxiv.org/abs/2007.07997) Briefly, the CT20-T1(en) corpus contains 962 human-annotated tweets about the novel coronavirus caused by SARS-CoV-2. 
 
+Note that the very first time running a model will take a few minutes to load and run everything properly. After that first go, using the model to identify claims is very fast.

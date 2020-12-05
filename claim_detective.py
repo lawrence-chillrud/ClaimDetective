@@ -1,11 +1,10 @@
-import torch.nn as nn
 import torch
-from transformers import RobertaModel, RobertaConfig, RobertaTokenizerFast
-import pandas as pd
-from sklearn.metrics import confusion_matrix
+import torch.nn as nn
 from torch.utils.data import DataLoader
 import torch.nn.functional as F
-#from torch.autograd import Variable
+from sklearn.metrics import confusion_matrix
+from transformers import RobertaModel, RobertaConfig, RobertaTokenizerFast
+import pandas as pd
 import numpy as np
 
 DEVICE = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
@@ -30,7 +29,6 @@ class torchDataset(torch.utils.data.Dataset):
         return item
 
     def __len__(self):
-        #return len(self.labels)
         return len(self.encodings)
 
 
