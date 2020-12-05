@@ -1,3 +1,4 @@
 Sentence,Check-Worthiness Score,Prediction
 Global warming is causing increasing hurricanes.,0.99879,1
+This is the third sentence.,-0.99950,0
 Cats are so much better than dogs.,-0.99951,0
