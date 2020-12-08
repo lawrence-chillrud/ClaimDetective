@@ -2,7 +2,7 @@
 
 `ClaimDetective` is a python class that allows the user to rank a list of sentences (i.e. potential claims) in order of most check-worthy to least check-worthy, i.e., the priority with which they should be fact-checked.
 
-`ClaimDetective` was built with a deep-learning model that fine-tunes RoBERTa under-the-hood to identify and rank claims that are worth fact-checking.
+`ClaimDetective` was built with a deep-learning model that fine-tunes RoBERTa under-the-hood to identify and rank claims that are worth fact-checking. To see the code used to train the `ClaimDetective` models, click [here](https://github.com/lawrence-chillrud/ClaimDetective-Training).
 
 ## Overview
 
