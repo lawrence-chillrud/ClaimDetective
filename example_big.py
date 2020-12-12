@@ -19,7 +19,7 @@ if __name__ == "__main__":
     print("Loaded model! Now attempting to scrape the webpage...")
     sents = get_webpage()
     print("Got the webpage! Now attempting to find claims...")
-    claims = sherlock.inspect(sents)
+    claims, _ = sherlock.inspect(sents)
     print("Saving claims!")
     sherlock.report(claims, file_name="./example_outputs/big_output_claimbuster.csv")
 

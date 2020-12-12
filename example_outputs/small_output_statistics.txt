@@ -1,0 +1,17 @@
+
+Statistics for ./example_outputs/small_output.csv
+
+**********************************************************************
+
+Accuracy: 1.0
+Precision: 1.0
+Recall: 1.0
+F1 score: 1.0
+
+Confusion Matrix: 
+        Pred=0  Pred=1
+True=0       2       0
+True=1       0       1
+
+Num. claims detected: 1 out of 3 sentences
+Total time spent classifying 3 sentences: 0.2964 seconds
