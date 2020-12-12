@@ -6,6 +6,7 @@ from sklearn.metrics import confusion_matrix
 from transformers import RobertaModel, RobertaConfig, RobertaTokenizerFast
 import pandas as pd
 import numpy as np
+import time
 
 DEVICE = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
 
@@ -81,19 +82,21 @@ class ClaimDetective():
         # tokenizer:
         self.tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base')
 
-    def inspect(self, sents, labels=None):
+    def inspect(self, sents, labels=None, bs=256):
+        tic = time.perf_counter()
         # set up test data:
-        n = len(sents)
         test_encodings = self.tokenizer(sents, truncation=True, padding=True)
-        test_dataset = torchDataset(encodings=test_encodings, labels=labels, length=n)
-        test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
-        
+        test_dataset = torchDataset(encodings=test_encodings, labels=labels, length=len(sents))
+        test_loader = DataLoader(test_dataset, batch_size=bs, shuffle=False) # batch_size = 1 if n doesn't work
+        n = len(test_loader)
+
         # book-keeping:
+        stats = {}
         running_preds = []
         running_softs = []
         running_ones = 0
         running_corrects = 0
-        printProgressBar(0, n, prefix='Progress:', suffix='sentence 0 / %d' % (n), length=25)
+        printProgressBar(0, n, prefix='Progress:', suffix='batch 0 / %d' % (n), length=25)
         # test:
         for i, batch in enumerate(test_loader):
             input_ids = batch['input_ids'].to(DEVICE)
@@ -111,26 +114,63 @@ class ClaimDetective():
             if labels:
                 running_corrects += torch.sum(preds == labs.data)
             running_ones += torch.sum(preds)
-            printProgressBar(i+1, n, prefix='Progress:', suffix='sentence %d / %d' % (i+1, n), length=25)
+            printProgressBar(i+1, n, prefix='Progress:', suffix='batch %d / %d' % (i+1, n), length=25)
         print()
-        
+        toc = time.perf_counter()
         # summary:
         if labels:
-            acc = torch.true_divide(running_corrects, len(labels))
+            acc = torch.true_divide(running_corrects, len(labels)).item()
             confusion_mat = confusion_matrix(labels, running_preds)
-            print("Accuracy: ", acc.item())
-            print("Confusion Matrix (true label = rows, predicted label = cols): ")
-            print(confusion_mat)
-        print("Num. claims detected: %d of %d sentence(s)" % (running_ones.item(), n))
+            cmdf = pd.DataFrame(confusion_mat, columns = ['Pred=0','Pred=1'], index = ['True=0', 'True=1'])
+            tp = cmdf.iloc[1, 1]
+            precision = tp / (tp + cmdf.iloc[0, 1])
+            recall = tp / (tp + cmdf.iloc[1, 0])
+            f1 = 2 * (precision * recall)/(precision + recall)
+
+            stats["Accuracy: "] = acc
+            stats["Precision: "] = precision
+            stats["Recall: "] = recall
+            stats["F1 score: "] = f1
+            stats["Confusion Matrix: "] = cmdf
+            stats["Num. claims detected: "] = "%d out of %d sentences" % (running_ones.item(), len(sents))
+            stats["Total time spent classifying %d sentences: " % (len(sents))] = f"{toc - tic:0.4f} seconds"
+
+            print("Accuracy: ", acc)
+            print("Precision: ", precision)
+            print("Recall: ", recall)
+            print("F1 score: ", f1)
+            print()
+            print("Confusion Matrix: ")
+            print(cmdf)
+            print()
+        print("Num. claims detected: %d of %d sentence(s)" % (running_ones.item(), len(sents)))
 
         # output:
         ranking_scores = []
         for pair in running_softs:
             ranking_scores.append(pair[1] - pair[0])
+        
+        if labels:
+            ranking = pd.DataFrame.from_records(list(zip(sents, ranking_scores, running_preds, labels)), columns=['Sentence', 'Check-Worthiness Score', 'Prediction', 'Label']).round(5).sort_values(by='Check-Worthiness Score', ascending=False).reset_index(drop=True)
+        else:
+            ranking = pd.DataFrame.from_records(list(zip(sents, ranking_scores, running_preds)), columns=['Sentence', 'Check-Worthiness Score', 'Prediction']).round(5).sort_values(by='Check-Worthiness Score', ascending=False).reset_index(drop=True)
 
-        ranking = pd.DataFrame.from_records(list(zip(sents, ranking_scores, running_preds)), columns=['Sentence', 'Check-Worthiness Score', 'Prediction']).round(5).sort_values(by='Check-Worthiness Score', ascending=False).reset_index(drop=True)
-        return ranking
+        return ranking, stats
 
-    def report(self, claims_df, file_name):
+    def report(self, claims_df, file_name, stats=None):
         claims_df.to_csv(file_name, float_format='%.5f', header=True, index=False)
         print("Saved claims to: ", file_name)
+
+        if stats:
+            stats_file_name = file_name.split(sep=".csv")[0] + "_statistics.txt"
+            with open(stats_file_name, "w") as fi:
+                fi.write("\nStatistics for {}".format(file_name) + "\n\n")
+                fi.write("*" * 70 + "\n\n")
+
+                for stat in stats.keys():
+                    if stat == "Confusion Matrix: ":
+                        line = "\n" + stat + "\n" + str(stats[stat]) + "\n\n"
+                    else:
+                        line = stat + str(stats[stat]) + "\n"
+                    fi.write(line)
+            print("Saved stats to: ", stats_file_name)
