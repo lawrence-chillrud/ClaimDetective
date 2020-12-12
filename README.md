@@ -4,6 +4,8 @@
 
 `ClaimDetective` was built with a deep-learning model that fine-tunes RoBERTa under-the-hood to identify and rank claims that are worth fact-checking. To see the code used to train the `ClaimDetective` models, click [here](https://github.com/lawrence-chillrud/ClaimDetective-Training).
 
+For `ClaimDetective` documentation, click [here](example_small.py).
+
 ## Overview
 
 1. [claim\_detective.py](claim_detective.py) contains all the necessary source code to use the check-worthiness detection models located in the `models` directory. 
@@ -17,6 +19,8 @@
 5. [example\_big.py](example_big.py) is another example of how to load and use a model in a more realistic setting. Note: to run this you will need more packages than those listed in `requirements.txt` (e.g. `nltk` and `BeautifulSoup`). The output from this file can be found in the `example_outputs` directory, in the files called `big_output_[model].csv` where `[model]` = the model used to generate the file.
 
 6. [example\_outputs](example_outputs) contains the output `.csv` files from the two `example.py` files.
+
+7. [misclassified.py](misclassified.py) is another example of how to load and use the model. The output of this file can be seen in the [incorrect\_preds](incorrect_preds) directory.
 
 ## Models
 
