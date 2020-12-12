@@ -1,0 +1,17 @@
+
+Statistics for ./incorrect_preds/clef19.csv
+
+**********************************************************************
+
+Accuracy: 0.9344633221626282
+Precision: 0.13555555555555557
+Recall: 0.4485294117647059
+F1 score: 0.2081911262798635
+
+Confusion Matrix: 
+        Pred=0  Pred=1
+True=0    6555     389
+True=1      75      61
+
+Num. claims detected: 450 out of 7080 sentences
+Total time spent classifying 7080 sentences: 23.0695 seconds
